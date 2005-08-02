@@ -2,7 +2,8 @@
 
 package ibis.connect.routedMessages;
 
-import ibis.connect.IPUtils;
+
+import ibis.util.IPUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

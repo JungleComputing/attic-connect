@@ -3,9 +3,9 @@
 package ibis.connect.routedMessages;
 
 import ibis.connect.BrokeredSocketFactory;
-import ibis.connect.IPUtils;
 import ibis.connect.IbisServerSocket;
 import ibis.connect.IbisSocket;
+import ibis.util.IPUtils;
 
 import java.io.IOException;
 import java.io.InputStream;

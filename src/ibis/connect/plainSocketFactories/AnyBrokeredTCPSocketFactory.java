@@ -3,11 +3,11 @@
 package ibis.connect.plainSocketFactories;
 
 import ibis.connect.BrokeredSocketFactory;
-import ibis.connect.IPUtils;
 import ibis.connect.IbisServerSocket;
 import ibis.connect.IbisSocket;
 import ibis.connect.routedMessages.RoutedMessagesSocketFactory;
 import ibis.connect.tcpSplicing.TCPSpliceSocketFactory;
+import ibis.util.IPUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

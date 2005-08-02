@@ -3,9 +3,9 @@
 package ibis.connect.tcpSplicing;
 
 import ibis.connect.ConnectionProperties;
-import ibis.connect.IPUtils;
 import ibis.connect.IbisSocket;
 import ibis.connect.plainSocketFactories.PlainTCPSocket;
+import ibis.util.IPUtils;
 import ibis.util.TypedProperties;
 
 import java.io.BufferedInputStream;
