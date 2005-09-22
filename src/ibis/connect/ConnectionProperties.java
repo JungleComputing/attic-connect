@@ -44,9 +44,9 @@ public class ConnectionProperties {
     public static final boolean VERBOSE = TypedProperties.booleanProperty(
             VERBOSE_PROP, false);
 
-    public static int inputBufferSize = 0;// 64 * 1024;
+    public static int inputBufferSize = 64 * 1024;
 
-    public static int outputBufferSize = 0;//64 * 1024;
+    public static int outputBufferSize = 64 * 1024;
 
     private static final String[] sysprops = { HUB_PORT, HUB_HOST,
             DEBUG_PROP, VERBOSE_PROP, PORT_RANGE, SPLICE_PORT, HUB_STATS,
