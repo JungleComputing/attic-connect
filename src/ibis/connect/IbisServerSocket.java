@@ -98,7 +98,7 @@ public abstract class IbisServerSocket extends ServerSocket {
     }
 
     public String toString() {
-        throw new RuntimeException("operation not implemented by " + this);
+        return "unImplemented serverSocket operation: toString()!";
     }
     /**
      * Returns the dynamic properties of
