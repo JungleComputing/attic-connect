@@ -161,7 +161,7 @@ public class Splice {
         }
     }
 
-    /** this returns null after a minute. If it takes longer, splicaing makes no sense. **/
+    /** this returns null after a minute. If it takes longer, splicing makes no sense. **/
     IbisSocket connectSplice(String rHost, int rPort) throws IOException {
         int i = 0;
         boolean connected = false;
