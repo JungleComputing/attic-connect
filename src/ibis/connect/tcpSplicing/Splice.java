@@ -26,6 +26,9 @@ public class Splice {
     static int serverPort = TypedProperties.intProperty(
             ConnectionProperties.SPLICE_PORT, 20246);
 
+    static int spliceTimeout = TypedProperties.intProperty(
+            ConnectionProperties.SPLICE_TIMEOUT, 10*1000);
+
     static int hintPort = serverPort + 1;
 
     private static NumServer server;
@@ -172,7 +175,8 @@ public class Splice {
         
         while (!connected) {
             long duration = System.currentTimeMillis() - start;
-            if(duration > 1000 * 60) throw new IOException("splicing timed out");
+	    if(spliceTimeout < 0) throw new IOException("splicing disabled");
+            if(spliceTimeout != 0 && duration > spliceTimeout * 1000) throw new IOException("splicing timed out");
                 
             try {
                 InetSocketAddress remoteAddr = new InetSocketAddress(rHost,

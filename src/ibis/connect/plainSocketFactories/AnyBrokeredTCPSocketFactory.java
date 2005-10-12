@@ -5,7 +5,7 @@ package ibis.connect.plainSocketFactories;
 import ibis.connect.BrokeredSocketFactory;
 import ibis.connect.IbisServerSocket;
 import ibis.connect.IbisSocket;
-import ibis.connect.routedMessages.RoutedMessagesSocketFactory;
+import ibis.connect.routedMessages.*;
 import ibis.connect.tcpSplicing.TCPSpliceSocketFactory;
 import ibis.util.IPUtils;
 
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.net.InetAddress;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -44,7 +45,7 @@ public class AnyBrokeredTCPSocketFactory extends BrokeredSocketFactory {
 
         private IbisSocket accpt = null;
 
-        boolean present = false;
+//        boolean present = false;
 
         public ServerInfo(Map properties) throws IOException {
             server = plainSocketType.createServerSocket(
@@ -53,10 +54,10 @@ public class AnyBrokeredTCPSocketFactory extends BrokeredSocketFactory {
         }
 
         public void run() {
-            synchronized (this) {
-                present = true;
-                notifyAll();
-            }
+//            synchronized (this) {
+//                present = true;
+//                notifyAll();
+//            }
             try {
                 accpt = (IbisSocket) server.accept();
             } catch (Exception e) {
@@ -85,6 +86,26 @@ public class AnyBrokeredTCPSocketFactory extends BrokeredSocketFactory {
     }
 
     public AnyBrokeredTCPSocketFactory() {
+    }
+
+    public IbisSocket createClientSocket(InetAddress destAddr, int destPort,
+            InetAddress localAddr, int localPort, int timeout, Map properties)
+            throws IOException {
+        IbisSocket s = new RoutedMessagesSocket(destAddr, destPort, localAddr, localPort, properties);
+	return s;
+    }
+
+    public IbisSocket createClientSocket(InetAddress addr, int port, Map p)
+            throws IOException {
+        IbisSocket s = new RoutedMessagesSocket(addr, port, p);
+        return s;
+    }
+
+    public IbisServerSocket createServerSocket(InetSocketAddress addr, int backlog, Map p)
+            throws IOException {
+        IbisServerSocket s = new RoutedMessagesServerSocket(addr.getPort(), addr
+                .getAddress(), p);
+        return s;
     }
 
     public IbisSocket createBrokeredSocket(InputStream in, OutputStream out,

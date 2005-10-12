@@ -9,8 +9,10 @@ import ibis.util.IPUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -63,21 +65,27 @@ public class PlainTCPSocketFactory extends BrokeredSocketFactory {
         if (hintIsServer) {
             IbisServerSocket server = createServerSocket(
                     new InetSocketAddress(IPUtils.getLocalHostAddress(), 0), 1, p);
-            ObjectOutputStream os = new ObjectOutputStream(out);
-            os.writeObject(server.getInetAddress());
-            os.writeInt(server.getLocalPort());
-            os.flush();
+
+            DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(out));
+            dos.writeUTF(server.getInetAddress().getHostAddress());
+            dos.writeInt(server.getLocalPort());
+            dos.flush();
+
             s = (IbisSocket) server.accept();
             tuneSocket(s);
         } else {
-            ObjectInputStream is = new ObjectInputStream(in);
-            InetAddress raddr;
+	    DataInputStream di = new DataInputStream(new BufferedInputStream(in));
+            String addr = di.readUTF();
+            int rport = di.readInt();
+
+            InetAddress raddr = null;
             try {
-                raddr = (InetAddress) is.readObject();
-            } catch (ClassNotFoundException e) {
-                throw new Error(e);
+                raddr = InetAddress.getByName(addr);
+            } catch(Exception e) {
+                throw new Error("EEK, could not create an inet address"
+                                    + "from a IP address. This shouldn't happen", e);
             }
-            int rport = is.readInt();
+
             s = createClientSocket(raddr, rport, p);
         }
         return s;

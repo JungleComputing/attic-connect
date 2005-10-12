@@ -2,8 +2,12 @@
 
 package ibis.connect.routedMessages;
 
+import ibis.util.*;
+import ibis.connect.*;
+import ibis.connect.plainSocketFactories.*;
 import java.io.EOFException;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
@@ -18,6 +22,8 @@ import org.apache.log4j.Logger;
 public class HubLink extends Thread {
 
     static Logger logger = ibis.util.GetLogger.getLogger(HubLink.class.getName());
+
+    private static PlainTCPSocketFactory plainSocketType = new PlainTCPSocketFactory();
 
     private HubProtocol.HubWire wire;
 
@@ -146,7 +152,10 @@ public class HubLink extends Thread {
 
     public HubLink(String host, int port) throws IOException {
         logger.debug("# HubLink()");
-        Socket s = new Socket(host, port);
+
+       InetAddress dest = InetAddress.getByName(host);
+       Socket s = plainSocketType.createClientSocket(dest, port, IPUtils.getAlternateLocalHostAddress(), 0, 0, null);
+
         wire = new HubProtocol.HubWire(s);
         localHostName = wire.getLocalName();
         localPort = wire.getLocalPort();

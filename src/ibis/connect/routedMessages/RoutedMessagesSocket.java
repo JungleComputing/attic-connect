@@ -51,7 +51,7 @@ public class RoutedMessagesSocket extends IbisSocket {
 
     static final int state_CLOSED = 6;
 
-    int state;
+    private int state;
 
     /*
      * misc methods for the HubLink to feed us
@@ -120,6 +120,38 @@ public class RoutedMessagesSocket extends IbisSocket {
 
     // Outgoing links constructor - public
     public RoutedMessagesSocket(InetAddress rAddr, int rPort, Map p)
+            throws IOException {
+        super(p);
+        logger.debug("# RoutedMessagesSocket(" + rAddr + ", " + rPort + ")");
+        commonInit(rAddr.getHostName());
+        localPort = hub.newPort(0);
+        hub.addSocket(this, localPort);
+
+        logger.debug("# RoutedMessagesSocket()- sending CONNECT");
+        state = state_CONNECTING;
+        hub.sendPacket(remoteHostname, -1, new HubProtocol.HubPacketConnect(
+                rPort, localPort));
+        synchronized (this) {
+            while (state == state_CONNECTING) {
+                logger
+                        .debug("# RoutedMessagesSocket()- waiting for ACCEPTED port = "
+                                + localPort);
+                try {
+                    this.wait();
+                } catch (InterruptedException e) { /* ignore */
+                }
+                logger.debug("# RoutedMessagesSocket()- unlocked");
+            }
+            if (state == state_ACCEPTED) {
+                state = state_CONNECTED;
+            } else if (state == state_REJECTED) {
+                throw new IOException("connection refused");
+            }
+        }
+    }
+
+    // Outgoing links constructor - public, bind to local IP
+    public RoutedMessagesSocket(InetAddress rAddr, int rPort, InetAddress lAddr, int lPort, Map p)
             throws IOException {
         super(p);
         logger.debug("# RoutedMessagesSocket(" + rAddr + ", " + rPort + ")");

@@ -23,6 +23,10 @@ public class ConnectionProperties {
 
     public static final String SPLICE_PORT = PROPERTY_PREFIX + "splice_port";
 
+    /** Splice timeout: 0 means try splicing forever, < 0 means do not try slicing,
+	> 0 means try splicing for slice_timeout seconds */
+    public static final String SPLICE_TIMEOUT = PROPERTY_PREFIX + "splice_timeout";
+
     public static final String DATA_LINKS = PROPERTY_PREFIX + "data_links";
 
     public static final String CONTROL_LINKS = PROPERTY_PREFIX
@@ -49,12 +53,12 @@ public class ConnectionProperties {
     public static int outputBufferSize = 64 * 1024;
 
     private static final String[] sysprops = { HUB_PORT, HUB_HOST,
-            DEBUG_PROP, VERBOSE_PROP, PORT_RANGE, SPLICE_PORT, HUB_STATS,
+            DEBUG_PROP, VERBOSE_PROP, PORT_RANGE, SPLICE_PORT, SPLICE_TIMEOUT, HUB_STATS,
             DATA_LINKS, CONTROL_LINKS, PAR_NUMWAYS, PAR_BLOCKSIZE, ISIZE, OSIZE };
 
     static {
         TypedProperties.checkProperties(PROPERTY_PREFIX, sysprops, null);
-        inputBufferSize = TypedProperties.intProperty(ISIZE, 0);
-        outputBufferSize = TypedProperties.intProperty(OSIZE, 0);
+        inputBufferSize = TypedProperties.intProperty(ISIZE, 64 * 1024);
+        outputBufferSize = TypedProperties.intProperty(OSIZE, 64 * 1024);
     }
 }

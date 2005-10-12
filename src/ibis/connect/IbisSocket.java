@@ -321,16 +321,16 @@ public abstract class IbisSocket extends Socket {
         if (props != null) {
             String a = (String) props.get(ConnectionProperties.ISIZE);
             if (a != null) {
-                logger.info("set recv buffer size to " + a);
+                logger.debug("set recv buffer size to " + a);
                 setReceiveBufferSize(Integer.parseInt(a));
             }
             a = (String) props.get(ConnectionProperties.OSIZE);
             if (a != null) {
-                logger.info("set send buffer size to " + a);
+                logger.debug("set send buffer size to " + a);
                 setSendBufferSize(Integer.parseInt(a));
             }
         }
-        logger.info("TCP_NO_DELAY enabled");
+        logger.debug("TCP_NO_DELAY enabled");
         setTcpNoDelay(true);
     }
 }

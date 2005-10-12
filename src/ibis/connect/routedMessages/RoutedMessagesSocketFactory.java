@@ -9,8 +9,8 @@ import ibis.util.IPUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -31,6 +31,14 @@ public class RoutedMessagesSocketFactory extends BrokeredSocketFactory {
 
     public void destroySocketType() {
         HubLinkFactory.destroyHubLink();
+    }
+
+    public IbisSocket createClientSocket(InetAddress destAddr, int destPort,
+            InetAddress localAddr, int localPort, int timeout, Map properties)
+            throws IOException {
+//	System.err.println("WARNING, bind to local IP address not implemented, using default");
+        IbisSocket s = new RoutedMessagesSocket(destAddr, destPort, localAddr, localPort, properties);
+	return s;
     }
 
     public IbisSocket createClientSocket(InetAddress addr, int port, Map p)
@@ -55,24 +63,25 @@ public class RoutedMessagesSocketFactory extends BrokeredSocketFactory {
             IbisServerSocket server = createServerSocket(
                     new InetSocketAddress(IPUtils.getLocalHostAddress(), 0), 1,
                     properties);
-            ObjectOutputStream os = new ObjectOutputStream(out);
-            Hashtable lInfo = new Hashtable();
-            lInfo.put("socket_address", server.getInetAddress());
-            lInfo.put("socket_port", new Integer(server.getLocalPort()));
-            os.writeObject(lInfo);
-            os.flush();
+
+	    DataOutputStream dos = new DataOutputStream(out);
+	    dos.writeUTF(server.getInetAddress().getHostAddress());
+	    dos.writeInt(server.getLocalPort());
+	    dos.flush();
+
             s = (IbisSocket) server.accept();
         } else {
-            ObjectInputStream is = new ObjectInputStream(in);
-            Hashtable rInfo = null;
-            try {
-                rInfo = (Hashtable) is.readObject();
-            } catch (ClassNotFoundException e) {
-                throw new Error(e);
-            }
-            InetAddress raddr = (InetAddress) rInfo.get("socket_address");
-            int rport = ((Integer) rInfo.get("socket_port")).intValue();
-            s = createClientSocket(raddr, rport, properties);
+	    DataInputStream di = new DataInputStream(in);
+	    String addr = di.readUTF();
+            InetAddress address = null;
+	    try {
+		address = InetAddress.getByName(addr);
+	    } catch(Exception e) {
+		throw new Error("EEK, could not create an inet address"
+				    + "from a IP address. This shouldn't happen", e);
+	    }
+	    int port = di.readInt();
+            s = createClientSocket(address, port, properties);
         }
         return s;
     }
