@@ -21,14 +21,21 @@ public abstract class ClientServerSocketFactory {
      * @param localAddr local IP address, null for any
      * @param localPort local port, 0 for any
      * @param timeout the timout in milliseconds, 0 is infinite
-     * @param properties Properties for the socket
-     * @return
-     * @throws IOException
+     * @param properties properties for the socket
+     * @return the socket.
+     * @throws IOException on trouble.
      */
     public abstract IbisSocket createClientSocket(InetAddress destAddr, int destPort, 
             InetAddress localAddr, int localPort, int timeout, Map properties)
             throws IOException;
     
+    /** Creates a server socket on the specified address.
+     * @param addr the address of the server socket
+     * @param backlog the backlog for the socket
+     * @param properties properties for the socket
+     * @return the server socket.
+     * @throws IOException on trouble.
+     */
     public abstract IbisServerSocket createServerSocket(InetSocketAddress addr, int backlog, Map properties)
             throws IOException;
     

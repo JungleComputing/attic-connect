@@ -270,8 +270,7 @@ public abstract class IbisSocket extends Socket {
      * Returns the dynamic properties of
      * this port. The user can set some implementation-specific dynamic
      * properties of the port, by means of the
-     * {@link ibis.ipl.ReceivePort#setProperty(String, Object)
-     * setProperty} method.
+     * {@link #setProperties(Map)} method.
      */
     public Map properties() {
         return props;
@@ -290,8 +289,7 @@ public abstract class IbisSocket extends Socket {
      * Returns a dynamic property of
      * this port. The user can set some implementation-specific dynamic
      * properties of the port, by means of the
-     * {@link ibis.ipl.ReceivePort#setProperty(String, Object)
-     * setProperty} method.
+     * {@link #setProperties(Map)} method.
      */
     public Object getProperty(String key) {
         return props.get(key);
@@ -307,13 +305,11 @@ public abstract class IbisSocket extends Socket {
     }
 
     /**
-     * Configures a socket according to user-specified properties. Currently,
+     * Configures this socket according to user-specified properties. Currently,
      * the input buffer size and output buffer size can be set using the system
      * properties "ibis.util.socketfactory.InputBufferSize" and
      * "ibis.util.socketfactory.OutputBufferSize".
      * 
-     * @param s
-     *            the socket to be configured
      * @exception IOException
      *                when configuring fails for some reason.
      */

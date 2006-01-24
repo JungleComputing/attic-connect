@@ -104,8 +104,7 @@ public abstract class IbisServerSocket extends ServerSocket {
      * Returns the dynamic properties of
      * this port. The user can set some implementation-specific dynamic
      * properties of the port, by means of the
-     * {@link ibis.ipl.ReceivePort#setProperty(String, Object)
-     * setProperty} method.
+     * {@link #setProperties(Map)} method.
      */
     public Map properties() {
         return props;
@@ -124,8 +123,7 @@ public abstract class IbisServerSocket extends ServerSocket {
      * Returns a dynamic property of
      * this port. The user can set some implementation-specific dynamic
      * properties of the port, by means of the
-     * {@link ibis.ipl.ReceivePort#setProperty(String, Object)
-     * setProperty} method.
+     * {@link #setProperties(Map)} method.
      */
     public Object getProperty(String key) {
         return props.get(key);

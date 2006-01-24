@@ -210,10 +210,9 @@ public class IbisSocketFactory {
      *            the IP address
      * @param port
      *            the port
-     * @param timeoutMillis
+     * @param timeout
      *            if < 0, throw exception on failure. If 0, retry until success.
-     *            if > 0, block at most <code>timeoutMillis</code>
-     *            milliseconds.
+     *            if > 0, block at most <code>timeout</code> milliseconds.
      * @param properties
      *            socket properties.
      * @exception IOException
