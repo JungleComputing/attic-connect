@@ -1,3 +1,5 @@
+NOTE: THIS IS NO LONGER UP-TO-DATE.
+
 How to plug in a new socket type.
 
 Go to the ibis/src/ibis/connect/socketFactory directory. In this
