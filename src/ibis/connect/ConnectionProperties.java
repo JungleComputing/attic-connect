@@ -42,6 +42,10 @@ public class ConnectionProperties {
 
     public static final String HUB_STATS = PROPERTY_PREFIX + "hub.stats";
 
+    public static final String ANY_TIMEOUT = PROPERTY_PREFIX + "any.timeout";
+
+    public static final String KEEP_ALIVE = PROPERTY_PREFIX + "keepAlive";
+
     public static final boolean DEBUG = TypedProperties.booleanProperty(
             DEBUG_PROP, false);
 
@@ -52,9 +56,13 @@ public class ConnectionProperties {
 
     public static int outputBufferSize = 64 * 1024;
 
+    public static final boolean KeepAlive = TypedProperties.booleanProperty(
+        ConnectionProperties.KEEP_ALIVE, false);
+
     private static final String[] sysprops = { HUB_PORT, HUB_HOST,
             DEBUG_PROP, VERBOSE_PROP, PORT_RANGE, SPLICE_PORT, SPLICE_TIMEOUT, HUB_STATS,
-            DATA_LINKS, CONTROL_LINKS, PAR_NUMWAYS, PAR_BLOCKSIZE, ISIZE, OSIZE };
+            DATA_LINKS, CONTROL_LINKS, PAR_NUMWAYS, PAR_BLOCKSIZE, ISIZE, OSIZE,
+            ANY_TIMEOUT, KEEP_ALIVE};
 
     static {
         TypedProperties.checkProperties(PROPERTY_PREFIX, sysprops, null);

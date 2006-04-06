@@ -2,13 +2,13 @@
 
 package ibis.connect;
 
-
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Map;
+
+import ibis.util.TypedProperties;
 
 public abstract class ClientServerSocketFactory {
 /*    public abstract IbisSocket createClientSocket(InetAddress destAddr, int destPort, 
@@ -58,5 +58,8 @@ public abstract class ClientServerSocketFactory {
             s.setSendBufferSize(ConnectionProperties.outputBufferSize);
         }
         s.setTcpNoDelay(true);
+        if (ConnectionProperties.KeepAlive) {
+            s.setKeepAlive(true);
+        }
     }
 }

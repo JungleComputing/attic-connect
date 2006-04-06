@@ -5,9 +5,11 @@ package ibis.connect.plainSocketFactories;
 import ibis.connect.BrokeredSocketFactory;
 import ibis.connect.IbisServerSocket;
 import ibis.connect.IbisSocket;
+import ibis.connect.ConnectionProperties;
 import ibis.connect.routedMessages.*;
 import ibis.connect.tcpSplicing.TCPSpliceSocketFactory;
 import ibis.util.IPUtils;
+import ibis.util.TypedProperties;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -37,6 +39,9 @@ public class AnyBrokeredTCPSocketFactory extends BrokeredSocketFactory {
 
     static Logger logger = ibis.util.GetLogger
             .getLogger(AnyBrokeredTCPSocketFactory.class.getName());
+
+    static final int TIMEOUT
+        = TypedProperties.intProperty(ConnectionProperties.ANY_TIMEOUT, 2000);
 
     private static PlainTCPSocketFactory plainSocketType = new PortRangeSocketFactory();
 
@@ -149,7 +154,7 @@ public class AnyBrokeredTCPSocketFactory extends BrokeredSocketFactory {
                 InetSocketAddress target = new InetSocketAddress(host, port);
                 
                 try {
-                    s = plainSocketType.createClientSocket(target.getAddress(), target.getPort(), IPUtils.getLocalHostAddress(), 0, 2000, properties);
+                    s = plainSocketType.createClientSocket(target.getAddress(), target.getPort(), IPUtils.getLocalHostAddress(), 0, TIMEOUT, properties);
                 } catch (Exception e) {
                     logger.debug("AnyBrokeredTCPSocketFactory client got exception", e);
                     os.writeInt(0); // failure

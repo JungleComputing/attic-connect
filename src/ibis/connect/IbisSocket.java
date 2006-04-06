@@ -328,5 +328,10 @@ public abstract class IbisSocket extends Socket {
         }
         logger.debug("TCP_NO_DELAY enabled");
         setTcpNoDelay(true);
+        
+        if (ConnectionProperties.KeepAlive) {
+            setKeepAlive(true);
+            logger.debug("TCP_KEEPALIVE enabled");
+        }
     }
 }
