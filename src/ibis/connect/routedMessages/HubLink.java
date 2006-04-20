@@ -3,7 +3,6 @@
 package ibis.connect.routedMessages;
 
 import ibis.util.*;
-import ibis.connect.*;
 import ibis.connect.plainSocketFactories.*;
 import java.io.EOFException;
 import java.io.IOException;

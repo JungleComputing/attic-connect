@@ -14,7 +14,6 @@ import java.io.DataOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.util.Hashtable;
 import java.util.Map;
 
 // SocketType descriptor for Routed Messages

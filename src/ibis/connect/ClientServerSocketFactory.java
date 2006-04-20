@@ -8,8 +8,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Map;
 
-import ibis.util.TypedProperties;
-
 public abstract class ClientServerSocketFactory {
 /*    public abstract IbisSocket createClientSocket(InetAddress destAddr, int destPort, 
             Map properties)

@@ -318,8 +318,6 @@ public class IbisSocketFactory {
             throws IOException {
         boolean connected = false;
         IbisServerSocket s = null;
-        int localPort;
-
         while (!connected) {
             try {
                 logger.info("Creating new ServerSocket on " + localAddress

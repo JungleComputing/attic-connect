@@ -24,8 +24,6 @@ public class NIOPortRangeSocketFactory extends BrokeredSocketFactory {
     static Logger logger = ibis.util.GetLogger.getLogger(NIOPortRangeSocketFactory.class
             .getName());
 
-    private static int portNumber;
-
     private static int startRange;
 
     private static int endRange;
@@ -45,7 +43,6 @@ public class NIOPortRangeSocketFactory extends BrokeredSocketFactory {
                 String to = range.substring(pos + 1, range.length());
                 startRange = Integer.parseInt(from);
                 endRange = Integer.parseInt(to);
-                portNumber = startRange;
                 logger.info("# PortRange: ports = " + startRange + "-"
                         + endRange);
 
@@ -83,16 +80,5 @@ public class NIOPortRangeSocketFactory extends BrokeredSocketFactory {
             boolean hintIsServer, Map p)
             throws IOException {
         return nioSocketFactory.createBrokeredSocket(in, out, hintIsServer, p);
-    }
-
-    private synchronized int allocLocalPort() {
-        int res = portNumber++;
-        if (portNumber >= endRange) {
-            portNumber = startRange;
-            System.err
-                    .println("WARNING, used more ports than available within "
-                            + "firewall range. Wrapping around");
-        }
-        return res;
     }
 }
